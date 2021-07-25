@@ -13,13 +13,20 @@ export const unpkgPathPlugin = () => {
           return { path: args.path, namespace: 'a' };
         } 
 
+        // whether or not we are working with a file that has a relative path in it
+        if (args.path.includes("./") || args.path.includes("../")){
+          return {
+            namespace: "a",
+            path: new URL(args.path, `${args.importer}/`).href
+          }
+        }
+
         // if we have a path other than index.js
         return {
           namespace: "a",
-          path: `https://unpkg.com/${args.path}`
+          path: `https://unpkg.com/${args.path}`                         
         }
-        
-        
+
         // else if (args.path === "tiny-test-pkg"){
         //   return { path: "https://unpkg.com/tiny-test-pkg@1.0.0/index.js", namespace: "a" }
         // }
@@ -37,7 +44,7 @@ export const unpkgPathPlugin = () => {
             loader: 'jsx',
             // in the contents it tries to find any require/imports and after finding any it runs the 
             contents: `
-              const message = require("tiny-test-pkg");
+              const message = require("medium-test-pkg");
               console.log(message);
             `,
           };
