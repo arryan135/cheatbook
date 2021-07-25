@@ -1,17 +1,55 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import * as esbuild from "esbuild-wasm";
+import {useState, useEffect, useRef } from "react"
+import ReactDOM from "react-dom";
+import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
+
+const App = () => {
+  const ref = useRef<any>();
+  const [input, setInput] = useState("");
+  const [code, setCode] = useState("");
+
+  // initialize esbuild 
+  const startService = async () => {
+    ref.current = await esbuild.startService({
+      worker: true,
+      wasmURL: "/esbuild.wasm"
+    });
+  }
+
+  // the second empty array argument makes sure that this useEffect hook is run once only when the App component is initialized
+  useEffect(() => {
+    startService();
+  }, [])
+
+  const onClick = async () => {
+    // if the user clicks the submit button as soon as the webpage starts up
+    // So there might a possiblity that esbuild hasn't loaded by then so we would need to stop 
+    if (!ref.current){
+      return;
+    }
+
+    // transform transpiles code. It doen't do any bunndling
+    const result = await ref.current.build({
+      entryPoints: ["index.js"],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin()]
+    });
+
+    // console.log(result);
+
+    setCode(result.outputFiles[0].text);
+  }
+  return <div>
+    <textarea value = {input} onChange = {e => setInput(e.target.value)}></textarea>
+    <div>
+      <button onClick = {onClick}>Submit</button>
+    </div>
+    <pre>{code}</pre>
+  </div>
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  <App/>,
+  document.querySelector("#root")
+)
