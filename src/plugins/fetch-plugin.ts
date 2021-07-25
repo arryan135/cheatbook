@@ -22,11 +22,15 @@ export const fetchPlugin = (inputCode: string) => {
         };
       });
 
-      build.onLoad({ filter: /.css$/}, async (args: any) => {
+      // if cached, then return. Otherwise, continue on with other onLoad()s
+      build.onLoad( { filter: /.*/ }, async (args: any) => {
         const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
         if (cachedResult){
           return cachedResult;
         }
+      });
+
+      build.onLoad({ filter: /.css$/}, async (args: any) => {
         const { data, request } = await axios.get(args.path);
         // remove quotations from the css file to enabled valid js
         const escaped = data
@@ -52,11 +56,6 @@ export const fetchPlugin = (inputCode: string) => {
 
 
       build.onLoad({ filter: /.*/ }, async (args: any) => {
-        const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-        // if it is in cache, return it immediately
-        if (cachedResult){
-          return cachedResult;
-        }
         const { data, request } = await axios.get(args.path);
         const result: esbuild.OnLoadResult =  {
           loader : "jsx",
