@@ -40,7 +40,7 @@ export const unpkgPathPlugin = () => {
             loader: 'jsx',
             // in the contents it tries to find any require/imports and after finding any it runs the 
             contents: `
-              import React, {useState} from "react"
+              import React, {useState} from "react@16.0.0"
               console.log(React);
             `,
           };
