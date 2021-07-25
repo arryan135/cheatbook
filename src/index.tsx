@@ -29,6 +29,7 @@ const App = () => {
     }
 
     // transform transpiles code. It doen't do any bunndling
+    // build is bundling
     const result = await ref.current.build({
       entryPoints: ["index.js"],
       bundle: true,
