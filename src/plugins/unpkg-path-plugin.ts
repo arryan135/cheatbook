@@ -11,9 +11,18 @@ export const unpkgPathPlugin = () => {
         console.log('onResolve', args);
         if (args.path === "index.js"){
           return { path: args.path, namespace: 'a' };
-        } else if (args.path === "tiny-test-pkg"){
-          return { path: "https://unpkg.com/tiny-test-pkg@1.0.0/index.js", namespace: "a" }
+        } 
+
+        // if we have a path other than index.js
+        return {
+          namespace: "a",
+          path: `https://unpkg.com/${args.path}`
         }
+        
+        
+        // else if (args.path === "tiny-test-pkg"){
+        //   return { path: "https://unpkg.com/tiny-test-pkg@1.0.0/index.js", namespace: "a" }
+        // }
       });
 
       // onLoad file is used to load up a file from the file system
