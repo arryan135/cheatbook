@@ -40,8 +40,8 @@ export const unpkgPathPlugin = () => {
             loader: 'jsx',
             // in the contents it tries to find any require/imports and after finding any it runs the 
             contents: `
-              const message = require("nested-test-pkg"); 
-              console.log(message);
+              import React, {useState} from "react"
+              console.log(React);
             `,
           };
         } 
