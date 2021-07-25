@@ -10,22 +10,22 @@ export const unpkgPathPlugin = (inputCode: string) => {
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
-      // is called when ESbuild is trying to figure out a path to a particular module
-      // with onResolve we have the ability to override where esbuild trys to find that file  
-      build.onResolve({ filter: /.*/ }, async (args: any) => {
-        console.log('onResolve', args);
-        if (args.path === "index.js"){
-          return { path: args.path, namespace: 'a' };
-        } 
 
-        // whether or not we are working with a file that has a relative path in it
-        if (args.path.includes("./") || args.path.includes("../")){
-          return {
-            namespace: "a",
-            path: new URL(args.path, `https://unpkg.com${args.resolveDir}/`).href
-          }
+      // Handle root entry file of "index.js"
+      build.onResolve({ filter: /(^index\.js$)/}, () => {
+        return {path: "index.js", namespace: "a"};
+      });
+
+      // Handle relative paths in a module
+      build.onResolve({filter: /^\.+\//}, (args: any) => {
+        return {
+          namespace: "a",
+          path: new URL(args.path, `https://unpkg.com${args.resolveDir}/`).href
         }
+      });
 
+      // Handle main file of a module 
+      build.onResolve({ filter: /.*/ }, async (args: any) => {
         // if we have a path other than index.js
         return {
           namespace: "a",
