@@ -31,10 +31,15 @@ export const fetchPlugin = (inputCode: string) => {
         // }
         const { data, request } = await axios.get(args.path);
         const fileType = args.path.match(/.css$/) ? "css" : "jsx";
+        // remove quotations from the css file to enabled valid js
+        const escaped = data
+          .replace(/\n/g, "")   // newlines removed
+          .replace(/"/g, '\\"') // double quotes escaped
+          .replace(/'/g, "\\'") // single quotes escaped
         const contents = fileType === "css" ? 
           `
             const style = document.createElement("style");
-            style.innerText = 'body { background-color: "red" }';
+            style.innerText = '${escaped}';
             document.head.appendChild(style);
           ` : data;
 
