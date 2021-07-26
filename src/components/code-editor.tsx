@@ -32,7 +32,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initialValue }) => {
       useTabs: false,
       semi: true,
       singleQuote: true
-    });
+    }).replace(/\n$/, "");
     // set formatted value back in the editor
     editorRef.current.setValue(formatted);
   }
