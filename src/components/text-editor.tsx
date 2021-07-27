@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import { fromNodes } from "jscodeshift/src/Collection";
+import "./text-editor.css"
 
 const TextEditor: React.FC = () => {
   const ref = useRef<HTMLDivElement | null>(null);
