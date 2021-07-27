@@ -7,3 +7,7 @@
 .w-md-editor ul {
   line-height: 1.0;
 }
+
+.text-editor .w-md-editor-bar svg {
+  display: none;
+}
