@@ -28,7 +28,7 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
       
       // if invalid cell move is requested
       if (targetIndex < 0 || targetIndex > state.order.length - 1){
-        return;
+        return state;
       }
 
       // swap the cells in the order array
@@ -36,11 +36,11 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
       // place the updated cell after changing order
       state.order[targetIndex] = action.payload.id; 
 
-      return;
+      return state;
     case ActionType.UPDATE_CELL:
       const { id, content } = action.payload;
       state.data[id].content = content;
-      return;
+      return state;
     case ActionType.INSERT_CELL_BEFORE:
       const cell: Cell = {
         content: "",
@@ -62,11 +62,11 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
         state.order.splice(foundIndex, 0, cell.id);
       } // if valid cell id was provided
 
-      return
+      return state;
     case ActionType.DELETE_CELL:
       delete state.data[action.payload];
       state.order = state.order.filter(id => id !== action.payload);
-      return;
+      return state;
     default:  
       return state;
   }
