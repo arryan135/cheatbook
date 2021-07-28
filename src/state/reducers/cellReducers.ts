@@ -70,7 +70,7 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
     default:  
       return state;
   }
-});
+}, initialState);
 
 const randomId = () => {
   // base 36 - all numbers from 0-9 and all letters from a-z
