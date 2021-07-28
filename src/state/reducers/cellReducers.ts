@@ -35,7 +35,7 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
       state.order[index] = state.order[targetIndex];
       // place the updated cell after changing order
       state.order[targetIndex] = action.payload.id; 
-      
+
       return;
     case ActionType.UPDATE_CELL:
       const { id, content } = action.payload;
@@ -51,5 +51,10 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
       return state;
   }
 });
+
+const randomId = () => {
+  // base 36 - all numbers from 0-9 and all letters from a-z
+  return Math.random().toString(36).substr(2, 5);
+}
 
 export default reducer;
