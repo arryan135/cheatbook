@@ -42,7 +42,27 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
       state.data[id].content = content;
       return;
     case ActionType.INSERT_CELL_BEFORE:
-      return state;
+      const cell: Cell = {
+        content: "",
+        type: action.payload.type,
+        id: randomId()
+      }
+
+      // add cell to data object
+      state.data[cell.id] = cell;
+
+      // find the index before which we have to insert the new cell. 
+      const foundIndex = state.order.findIndex(id => id === action.payload.id);
+
+      // if no id was provided foundIndex is -1.
+      // add new cell to the end of the order array
+      if (foundIndex < 0){
+        state.order.push(cell.id);
+      } else{
+        state.order.splice(foundIndex, 0, cell.id);
+      } // if valid cell id was provided
+
+      return
     case ActionType.DELETE_CELL:
       delete state.data[action.payload];
       state.order = state.order.filter(id => id !== action.payload);
