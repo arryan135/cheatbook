@@ -22,7 +22,21 @@ const initialState: CellsState = {
 const reducer = produce((state: CellsState = initialState, action: Action): CellsState | void => {
   switch(action.type){
     case ActionType.MOVE_CELL: 
-      return state;
+      const { direction } = action.payload;
+      const index = state.order.findIndex(id => id === action.payload.id);
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+      
+      // if invalid cell move is requested
+      if (targetIndex < 0 || targetIndex > state.order.length - 1){
+        return;
+      }
+
+      // swap the cells in the order array
+      state.order[index] = state.order[targetIndex];
+      // place the updated cell after changing order
+      state.order[targetIndex] = action.payload.id; 
+      
+      return;
     case ActionType.UPDATE_CELL:
       const { id, content } = action.payload;
       state.data[id].content = content;
