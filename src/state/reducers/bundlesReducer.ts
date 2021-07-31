@@ -1,5 +1,4 @@
 import produce from "immer";
-import { act } from "react-dom/test-utils";
 import {ActionType} from "../action-types";
 import {Action} from "../actions";
 
