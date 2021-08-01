@@ -15,37 +15,43 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell, createBundle } = useActions();
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const cumulativeCode: string[] = useTypedSelector(state => {
-    const { data, order } = state.cells;
-    const orderedCells = order.map((id: string) => data[id]);
+  const { data, order } = state.cells;
+  const orderedCells = order.map((id: string) => data[id]);
 
-    const cumulativeCode = [
-      `
-        import __React__ from "react";
-        import __ReactDOM__ from "react-dom";
-        const show = (value) => {
-          const root = document.querySelector("#root");
-          if (typeof value === 'object'){
-            if (value.$$typeof && value.props){
-              __ReactDOM__.render(value, root);
-            } else{
-              root.innerHTML = JSON.stringify(value);
-            }
-          } else {
-            root.innerHTML = value;
-          }
-        };
-      `
-    ];
-    for (let c of orderedCells){
-      if (c.type === "code"){
-        cumulativeCode.push(c.content);
+  const showFunc = 
+  `
+    import __React__ from "react";
+    import __ReactDOM__ from "react-dom";
+    var show = (value) => {
+      const root = document.querySelector("#root");
+      if (typeof value === 'object'){
+        if (value.$$typeof && value.props){
+          __ReactDOM__.render(value, root);
+        } else{
+          root.innerHTML = JSON.stringify(value);
+        }
+      } else {
+        root.innerHTML = value;
       }
+    };
+  `;
+  const showFuncNoop = `var show = () => {}`
+  const cumulativeCode = [];
+  for (let c of orderedCells){
+    if (c.type === "code"){
       if (c.id === cell.id){
-        break;
+        cumulativeCode.push(showFunc);
+      } else {
+        cumulativeCode.push(showFuncNoop);
       }
+      cumulativeCode.push(c.content);
     }
+    if (c.id === cell.id){
+      break;
+    }
+  }
 
-    return cumulativeCode;
+  return cumulativeCode;
   });
 
   useEffect(() => {
