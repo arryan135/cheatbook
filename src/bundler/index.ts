@@ -21,7 +21,9 @@ const esBuildInit =  async (rawCode: string) => {
       define: {
         "process.env.NODE_ENV": '"production"',
         global: 'window'
-      }
+      },
+      jsxFactory: "__React__.createElement",
+      jsxFragment: "__React__.Fragment"
     });
     return {
       code: result.outputFiles[0].text,
