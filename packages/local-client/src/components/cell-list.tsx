@@ -18,6 +18,7 @@ const CellList: React.FC = () => {
 
   useEffect(() => {
     saveCells();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(cells)]);
 
   const renderedCells = cells.map(cell => 
