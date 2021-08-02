@@ -21,7 +21,8 @@ export const createCellsRouter = (filename: string, dir: string) => {
       res.send(JSON.parse(result));
     } catch (err){
       if (err.code === "ENOENT"){
-        // Add code to create a file and add defualt cells
+        await fs.writeFile(fullPath, "[]", "utf-8");
+        res.send([]);
       } else {
         throw err;
       }
