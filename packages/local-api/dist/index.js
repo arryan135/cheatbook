@@ -20,7 +20,7 @@ var serve = function (port, filename, dir, useProxy) {
     }
     else {
         // Apply node's HARTH resolution algorithm to find file location of index.html (absolute path)
-        var packagePath = require.resolve("local-client/build/index.html");
+        var packagePath = require.resolve("@cheatbook/local-client/build/index.html");
         app.use(express_1.default.static(path_1.default.dirname(packagePath)));
     }
     return new Promise(function (resolve, reject) {
