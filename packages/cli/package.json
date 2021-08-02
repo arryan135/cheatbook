@@ -2,6 +2,9 @@
   "name": "cheatbook",
   "version": "1.0.0",
   "description": "",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "tsc --watch --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1"
