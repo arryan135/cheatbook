@@ -17,11 +17,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^8.1.0",
-    "@cheatbook/local-api": "^1.0.0"
+    "@cheatbook/local-api": "^1.0.0",
+    "commander": "^8.1.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.10",
+    "esbuild": "0.8.26",
     "typescript": "^4.3.5"
   }
 }
