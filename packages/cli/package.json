@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^8.1.0",
-    "local-api": "^1.0.0"
+    "@cheatbook/local-api": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.10",
